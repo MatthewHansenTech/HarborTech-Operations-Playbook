@@ -1,57 +1,79 @@
 # Week 2: IAM and AWS CLI Investigation
 
 ## HarborTech Ticket Summary
-Marcus Webb can authenticate with Riverside Goods' AWS account but cannot perform any assigned inventory work. We confirmed that Marcus has no permissions to upload within riverside-inventory. Marcus is currently the Inventory Coordinator and needs to read inventory, report objects, and approve inventory files. He has no onboarding record showing the IAM user exists, with no job-function group and no directly attached permission policy. 
+HarborTech Support received a ticket TKT-2026-0002 regarding Marcus Webb, an Inventory Coordinator for Riverside Goods. The ticket reports that Marcus can successfully authenticate and log into the AWS Management Console, but he receives an "AccessDenied" error whenever he attempts inventory management tasks on the assigned S3 bucket. HarborTech was tasked with diagnosing whether the issue stems from an authentication failure or an authorization gap, evaluating a client access request, and recommending a least-privilege access model.
 
 ## Client Impact
-How missing or incorrect permissions affect Marcus Webb's ability to perform the required work: He cannot upload any objects to riverside-inventory. The business states his job is to maintain the inventory by reading inventory, reporting objects, and uploading approved files. If he lacks permission to do so, there is a huge risk because no one is managing the unupdated list in the bucket.
+Because of the restriction, Marcus cannot view inventory reports, list bucket contents, or upload approved inventory documentation to Amazon S3. This completely blocks his ability to perform daily inventory tracking for Riverside Goods, risking inventory miscounts and operational delays.
 
 ## AWS Services Involved
 Identify the AWS services and concepts involved in the investigation, such as:
-- AWS Identity and Access Management (IAM) - Authenticated users to provide a trusted work environment and the creation of users, groups, and roles
-- IAM users, groups, roles, and policies - A restriction measure for accounts, creating a way to authorize users to do explicit permissions focused on configured policy documents
-- Amazon S3 - Allows management of an object storage service to store and retrieve amounts of data
-- AWS CloudShell - Grants us the ability to manage and navigate resources directly from the AWS management console
-- AWS Command Line Interface (AWS CLI) A console to allow the viewing or inputting of commands to interact with the creation of resources within AWS
-- AWS Regions - Puts you in an area close to a data center that can safely store your resources
+- AWS Identity and Access Management (IAM): Used to manage user identities, create roles, trust policies, and permission boundaries.
+- IAM users, groups, roles, and policies: The core identity components using JSON policy documents controlling authorization.
+- Amazon S3: Object storage service hosting within the riverside-inventory bucket.
+- AWS CloudShell: Browser-based shell environment used to securely execute CLI commands in the AWS Console.
+- AWS Command Line Interface (AWS CLI): Tool used to identify contents and inspect IAM entities.
+- AWS Regions: Locations hosting the isolated S3 storage resources and IAM control plane endpoints.
 
 ## Virtualization Connection
-Identity and access controls are who or what has the direct ability to modify, create, or delete any cloud resources 
+In software-defined cloud infrastructures, identity-based access controls replace physical perimeters. Just as hypervisors control access to virtualized compute, networking, and storage resources, AWS IAM acts as the control-plane perimeter. Without authorization rules, unauthorized identities could modify software-defined networks, alter virtual storage permissions, and disrupt cloud workloads.
 
 ## Evidence Reviewed
 Document the evidence you reviewed, such as:
-- Successful authentication - Marcus was able to successfully sign in to the Riverside Goods AWS console with his assigned IAM user credentials
-- Required job responsibilities - Marcus is the inventory coordinator, and his job responsibilities are to list the riverside-inventory bucket and be able to read inventory, report objects, and upload any approved inventory files
-- IAM identity information - Marcus Webb AWS account
-- Group or policy evidence - The onboarding record shows Marcus has no current job-function group and has no directly attached permission policies
-- AccessDenied output - Access Denied when requesting to list inventory
-- AWS CLI caller identity - "User ID "XXXXXXXXXXXXXXXXXXXXXXX:userXXXXXXX=Matthew_J._Hansen "Account" XXXXXXXXXXX "ARN" arn:aws;sts::XXXXXXXXXXXXXXXXXX:assumed-role/voclabs/userXXXXXXX=Matthew_J._Hansen
-- Requested S3 actions - s3:ListBucket allows to view files s3:GetObject allows to read and report s3:PutOject to allow uploading
-- Resource scope - arn:aws:s3:::riverside-inventory & arn:aws:s3:::riverside-inventory/*
+- Successful authentication: Marcus signed into the AWS Console using valid IAM user credentials (Evidence A).
+- Required job responsibilities: Daily workflow required for listing bucket contents, downloading report objects, and uploading new inventory files (Evidence B).
+- IAM identity information: Marcus operates as an IAM user identity within the client's AWS account.
+- Group or policy evidence: Account inspection confirmed zero attached managed/inline policies and no active IAM group memberships (Evidence C).
+- AccessDenied output: Requesting bucket contents returned an explicit "AccessDenied" error response (Evidence D).
+- AWS CLI caller identity: Running "aws sts get-caller-identity" confirmed active identity context "arn:aws:sts::*************:assumed-role/voclabs/user*******=Matthew_J._Hansen".
+- Requested S3 actions: Required API calls are "s3:ListBucket", "s3:GetObject", and "s3:PutObject".
+- Resource scope: Targets are bucket "arn:aws:s3:::riverside-inventory" and objects "arn:aws:s3:::riverside-inventory/*".
 
 ## Operational Analysis
-The evidence shows that Marcus currently has no authorization. Authentication and authorization are completely different: authentication verifies your credentials to log in, while authorization determines what you can do once you're logged in with the current role.
+The evidence shows that the access problem is an authorization gap, and not an authentication failure.
+Authentication was verified when Marcus successfully signed in with valid credentials
+Authorization failed because AWS IAM operates under a default-deny evaluation mode. Because Marcus has no attached permission policies or group memberships, AWS denied the S3 API calls by default.
 
 ## Recommendation
-An approach we can use is to create a managed policy that is attached to a dedicated job-function IAM group and apply permissions directly to a user
+Reject "AmazonS3FullAccess" the client requested and implement a customer-managed, least-privilege IAM policy attached to an IAM Group. Add Marcus to this group with the following policy scope:
+{
+
+  "Version": "2012-10-17",
+
+  "Statement": [
+
+    {
+
+      "Effect": "Allow",
+
+      "Action": ["s3:GetObject", "s3:ListBucket", "s3:PutObject"],
+
+      "Resource": [
+
+        "arn:aws:s3:::riverside-inventory",
+
+        "arn:aws:s3:::riverside-inventory/*"
+
+      ]
+
+    }
 
 ## Escalation Notes
-We can create an IAM group with permissions above a standard user, allowing Marcus to view, report, create, and upload verified files. If this doesn't work, we can authorize specific actions within the bucket, which would be the best approach because we can ask the current script to include s3:PutObject, allowing Marcus to upload new inventory. Because currently is allowed to view inside the bucket and read 
-
+The access gap analysis and recommended policy scope have been documented for escalation. Per HarborTech operational governance, all tier-1 analysts and interns do not make production IAM modifications. An authorized tier-2 or tier-3 analyst must review and deploy the proposed policy and group creation to prevent unauthorized policy drift and ensure account compliance.
 
 ## Lessons Learned
-Week 2 taught me that IAM privileges aren't a simple on/off switch that gives you permission to do whatever. It's a step-by-step process to figure out what users can do, what they can't, and how to configure it properly. It also shows how to navigate CloudShell to view your account details, like your role, name, and anything that supports authentication. Least privilege ensures that users have only the permissions they need to do their job, and that access is granted through a defined process. The AWS CLI shows what a person enters in the command shell and can verify whether they entered the correct commands to receive the correct output. For my student authentication, I've bleeped out the special characters for security, but this verifies who I am, and I can see a ton of descriptions of what my current role's abilities are and what the console shows. When identifying access problems, I will run into them in the future since AWS Learner Lab has limits, but this week I had no difficulty accessing information. 
+Week 2 taught me the difference between Authentication and authorization: authentication proves identity with a successful console login but does not grant permission to execute API actions. I learned that least-privilege standard permissions must be restricted to specific API actions and have exact resource names rather than broad managed policies. The CLI Investigation taught me to use tools like aws sts get-caller-identity and aws iam list-attached-role-policies to gather evidence during troubleshooting and verify accounts or role-managed policy details. 
 
 ## Professional Vocabulary
 Define the important Week 2 terms in your own words.
 Include terms such as:
-- Authentication - A way to identify your account that is you that is signing in
-- Authorization - Access for certain permissions that allow or deny your access
-- IAM - The identity of the user, with authentication, and current authorization for resources
-- Policy - A set of rules that allows a user to follow and can allow or deny access
-- Least Privilege - Gives a user the lowest permissions of access
-- AccessDenied - You lack the authorization to complete the action
-- AWS CLI - An interface that allows you to input commands within a command line shell to create, manage, or delete resources
-- CloudShell - Allows you to manage multiple cloud resources without installing hardware
-- Caller Identity - Provides authenticated information about the account, role, ID, and additional information about its current limits.
-- Resource Scope - Boundaries for resources that are configured with rules
+- Authentication: The process to verify an accounts identity of a user when it comes to signing into AWS.
+- Authorization: Actions that individuals can have permissions to manage, delete, or create resources.
+- IAM: Used to securely control access to AWS resources.
+- Policy: JSON document that formally defines permissions granted or denied to an identity or resource.
+- Least Privilege: Grants only the minimum permissions necessary to perform an approved job function.
+- AccessDenied: An error response returned when an identity attempts an action without explicit allow permissions.
+- AWS CLI: A Command-line tool used to programmatically interact with AWS services.
+- CloudShell: A browser-based shell environment provided in the AWS Console for executing CLI commands.
+- Caller Identity: The AWS account, user ARN, and ID.
+- Resource Scope: Specific target to which an IAM policy statement applies.
