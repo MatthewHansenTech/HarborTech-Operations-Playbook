@@ -25,7 +25,7 @@ Document the evidence you reviewed, such as:
 - IAM identity information: Marcus operates as an IAM user identity within the client's AWS account.
 - Group or policy evidence: Account inspection confirmed zero attached managed/inline policies and no active IAM group memberships (Evidence C).
 - AccessDenied output: Requesting bucket contents returned an explicit "AccessDenied" error response (Evidence D).
-- AWS CLI caller identity: Running "aws sts get-caller-identity" confirmed active identity context "arn:aws:sts::*************:assumed-role/voclabs/user*******=Matthew_J._Hansen".
+- AWS CLI caller identity: Running "aws sts get-caller-identity" confirmed active identity context "arn:aws:sts::*************:assumed-role/voclabs/user*******=Username".
 - Requested S3 actions: Required API calls are "s3:ListBucket", "s3:GetObject", and "s3:PutObject".
 - Resource scope: Targets are bucket "arn:aws:s3:::riverside-inventory" and objects "arn:aws:s3:::riverside-inventory/*".
 
