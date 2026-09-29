@@ -65,13 +65,21 @@ I learned that the control plane must verify and connect to the firewall rules, 
 
 ## Professional Vocabulary
 EC2 Instance: A virtual server configured with specific compute, memory, and storage capacity
+
 AMI: An image template an EC2 instance would use, containing the operating system, application server, and software configurations required to launch an instance
 EBS: a network-attached block storage designed for use with EC2 instances that retains data independently
+
 Security group: controls inbound and outbound traffic to instances using explicit permission rules
+
 User Data: allows you to automate with the use of a script provisioning the config of a virtual machine during its boot cycle
+
 Metadata: Operating data about a running instance, providing Instance ID, private/public IPs, and IAM roles
+
 Lifecycle: The status of an instance, such as pending, running, or stopped
+
 AWS Control Plane: A manager of the api layer used by administrators to configure, inspect, and route cloud infrastructure
+
 Guest OS Layer: Going inside a running virtual machine
+
 Default Deny Ingress: A security architecture where all incoming network traffic is blocked and must be manually allowed to pass through.
 
