@@ -63,12 +63,21 @@ Evidence-Based Auditing taught me that empty CLI outputs [] and validation error
 
 ## Professional Vocabulary
 Elasticity: The ability of cloud infrastructure to automatically expand or shrink compute capacity as real-time demand fluctuates.
+
 Scalability: An architecture's structural capacity to handle increased workload volumes by adding resources.
+
 Load Balancer: A service that distributes incoming application traffic evenly across multiple backend instances to ensure high performance and prevent single-server overload.
+
 Target Group: A designated group of backend compute resources, such as EC2 instances, registered to receive routed requests from a load balancer.
+
 Health Check: An automated verification check a load balancer sends periodically to confirm an instance is operational.
+
 Auto Scaling Group: A collection of EC2 instances that automatically provisions or terminates instances based on demand policies or health status.
+
 Launch Template: A saved configuration blueprint containing instance details—such as AMI ID, instance type, security groups, and key pairs.
+
 Desired Capacity: The target baseline count of active instances an Auto Scaling Group maintains during regular operations.
+
 Route 53: AWS cloud Domain Name System that translates user domain names into IP addresses and routes internet traffic.
+
 Failover: An automated operational mechanism that redirects client traffic from an unhealthy primary endpoint to a designated secondary operational endpoint.     
