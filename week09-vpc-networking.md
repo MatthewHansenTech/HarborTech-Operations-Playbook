@@ -7,12 +7,12 @@ HarborTech received ticket TKT-2026-0009 about a web application that was not ac
 Incorrect routing, subnet configuration, or traffic filtering can prevent users from accessing any web applications. When network traffic cannot reach a server, customers may be unable to access services, resulting in lost business, reduced productivity, and potential downtime. Even when a server is running, misconfigured routes, security groups, or network ACLs can block communication and make an application unavailable.
 
 ## AWS Services Involved
-Identify the AWS services and concepts involved in the investigation, such as:
+The investigation involved Amazon VPC, Subnets, Route Tables, Internet Gateways, Security Groups, and Network ACLs. We reviewed these services to determine why the web application could not be reached from the internet:
 - Amazon VPC: Used to review the network where the web server was deployed
-- Subnets: To identify where the web server and private host were located
-- Route Tables: Determine how network traffic was being routed
+- Subnets: Used to identify where the web server and private host were located
+- Route Tables: Determined how network traffic was being routed
 - Internet Gateway: Was checked to verify that internet access was available to the VPC
-- NAT Gateway: Determines whether private resources had internet access
+- NAT Gateway: Determined whether private resources had internet access
 - Security Groups: Reviewed to verify that HTTP and SSH traffic were allowed
 - Network ACLs: Identified any rules that could block network traffic
 - CIDR Blocks: Reviewed to verify network addressing and subnet ranges
@@ -24,6 +24,8 @@ I learned that virtual servers communicate through virtual networks that use sub
 
 ## Evidence Reviewed
 
+### VPC CIDR
+
 Command:
 aws ec2 describe-vpcs
 
@@ -31,7 +33,7 @@ Observed Result:
 "VpcId": "vpc-074d5ec0d39296a55",
 "CidrBlock": "10.0.0.0/16",
 
-Was performed in VPC vpc-074d5ec0d39296a55 using the 10.0.0.0/16 network range.
+This investigation was performed in VPC vpc-074d5ec0d39296a55 using the 10.0.0.0/16 network range.
 
 ### Subnet CIDR
 
@@ -180,7 +182,7 @@ curl: (28) Failed to connect to 98.83.29.163 port 80 after 5000 ms: Timeout was 
 The website could not be reached through HTTP.
 
 ## Operational Analysis
-My evidence shows that the Web Server was running and had both a public IP address (98.83.29.163) and a private IP address (10.0.1.8) assigned. This confirmed that the server itself was operational and had network addressing configured. The Current security group allowed inbound HTTP traffic on TCP port 80 and inbound SSH traffic on TCP port 22 from 0.0.0.0/0, so the security group was not the primary cause of the website connectivity issue. Our route table evidence showed that route table rtb-0e316fc148cf742f1 contained only the local route 10.0.0.0/16 and no default route 0.0.0.0/0 pointing to Internet Gateway igw-09d9fa30e71a757c5. Because internet traffic wasn't directed to the Internet Gateway, users couldn't reach the website even though the web server had a public IP address. The Internet Gateway was attached and available, so the gateway itself wasn't the issue. Instead, the missing route prevented traffic from reaching the gateway. The Network ACL contained Rule 40, which denied inbound SSH traffic on TCP port 22 from all IP addresses. This explained why SSH connection attempts could not be established. While this did not directly cause the website outage, it prevented administrators from remotely accessing the server for troubleshooting. Our connectivity tests supported these findings. The HTTP test timed out and was unsuccessful. Based on the evidence collected, the primary issue involved routing, while the Network ACL created an additional administrative access issue.
+My evidence shows that the Web Server was running and had both a public IP address (98.83.29.163) and a private IP address (10.0.1.8) assigned. This confirmed that the server itself was operational and had network addressing configured. The Current security group allowed inbound HTTP traffic on TCP port 80 and inbound SSH traffic on TCP port 22 from 0.0.0.0/0, so the security group was not the primary cause of the website connectivity issue. Our route table evidence showed that route table rtb-0e316fc148cf742f1 contained only the local route 10.0.0.0/16 and no default route 0.0.0.0/0 pointing to Internet Gateway igw-09d9fa30e71a757c5. Because internet traffic wasn't directed to the Internet Gateway, users couldn't reach the website even though the web server had a public IP address. The Internet Gateway was attached and available, so it wasn't the issue. Instead, the missing route prevented traffic from reaching the gateway. The Network ACL contained Rule 40, which denied inbound SSH traffic on TCP port 22 from all IP addresses. This explained why SSH connection attempts could not be established. While this did not directly cause the website outage, it prevented administrators from remotely accessing the server for troubleshooting. Our connectivity tests supported these findings. The HTTP test timed out and was unsuccessful. Based on the evidence collected, the primary issue involved routing, while the Network ACL created an additional administrative access issue.
 
 ## Recommendation
 Based on the evidence I collected, I recommend adding a default route 0.0.0.0/0 to route table rtb-0e316fc148cf742f1 and directing all traffic to the Internet Gateway igw-09d9fa30e71a757c5. This recommendation is supported by the route table evidence and directly addresses the website accessibility issue reported in ticket TKT-2026-0009. I also recommend reviewing Network ACL acl-06ab14cefcbc219ed and modifying or removing Rule 40 so it no longer denies SSH traffic on TCP port 22. This would restore administrative connectivity without requiring changes to the VPC, subnet design, or security groups.
@@ -192,8 +194,6 @@ The evidence showed that the recommended changes involve modifying route table r
 This week taught me that a running EC2 instance with a public IP address doesn't automatically mean a website is reachable from the internet. Route tables, Internet Gateways, security groups, and Network ACLs all work together to create the network path. I also learned that troubleshooting should be based on evidence, not assumptions. By reviewing the VPC configuration, subnet configuration, route tables, Internet Gateway attachment, security groups, Network ACLs, and connectivity test results, I identified where the network path was failing and recommended changes that directly addressed the problem. Another important lesson was understanding the difference between security groups and Network ACLs. Even though the security group allowed HTTP and SSH traffic, the Network ACL still denied SSH access. This showed how multiple layers of security can affect connectivity and why you should review every layer during an investigation.
 
 ## Professional Vocabulary
-Define the important Week 9 terms in your own words.
-Include terms such as:
 - VPC: A private network in AWS where you place and manage your cloud resources
 - Subnet: A small section inside a VPC used to organize resources and traffic
 - Route Table: A list of rules that tells network traffic where it should go
