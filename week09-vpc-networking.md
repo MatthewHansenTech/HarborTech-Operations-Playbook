@@ -8,16 +8,16 @@ Incorrect routing, subnet configuration, or traffic filtering can prevent users 
 
 ## AWS Services Involved
 Identify the AWS services and concepts involved in the investigation, such as:
-- Amazon VPC
-- Subnets
-- Route Tables
-- Internet Gateway
-- NAT Gateway
-- Security Groups
-- Network ACLs
-- CIDR Blocks
-- Public and Private Subnets
-- VPC Flow Logs
+- Amazon VPC: Used to review the network where the web server was deployed
+- Subnets: To identify where the web server and private host were located
+- Route Tables: Determine how network traffic was being routed
+- Internet Gateway: Was checked to verify that internet access was available to the VPC
+- NAT Gateway: Determines whether private resources had internet access
+- Security Groups: Reviewed to verify that HTTP and SSH traffic were allowed
+- Network ACLs: Identified any rules that could block network traffic
+- CIDR Blocks: Reviewed to verify network addressing and subnet ranges
+- Public and Private Subnets: Understood how resources were separated within the VPC
+- VPC Flow Logs: To determine whether network traffic logs were available for troubleshooting
 
 ## Virtualization Connection
 I learned that virtual servers communicate through virtual networks that use subnets, route tables, gateways, and security controls to manage traffic flow. Like traditional networking, virtualized cloud resources need proper routing and access controls to communicate successfully. A virtual machine can be running and still be unreachable if networking components are misconfigured.
