@@ -180,6 +180,14 @@ curl: (28) Failed to connect to 98.83.29.163 port 80 after 5000 ms: Timeout was 
 
 The website could not be reached through HTTP.
 
+Command:
+ssh ec2-user@98.83.29.163
+
+Observed Result:
+Connection attempt unsuccessful.
+
+This confirmed that I could not establish SSH access to the server.
+
 ## Operational Analysis
 My evidence shows that the Web Server was running and had both a public IP address (98.83.29.163) and a private IP address (10.0.1.8) assigned. This confirmed that the server itself was operational and had network addressing configured. The Current security group allowed inbound HTTP traffic on TCP port 80 and inbound SSH traffic on TCP port 22 from 0.0.0.0/0, so the security group was not the primary cause of the website connectivity issue. Our route table evidence showed that route table rtb-0e316fc148cf742f1 contained only the local route 10.0.0.0/16 and no default route 0.0.0.0/0 pointing to Internet Gateway igw-09d9fa30e71a757c5. Because internet traffic wasn't directed to the Internet Gateway, users couldn't reach the website even though the web server had a public IP address. The Internet Gateway was attached and available, so it wasn't the issue. Instead, the missing route prevented traffic from reaching the gateway. The Network ACL contained Rule 40, which denied inbound SSH traffic on TCP port 22 from all IP addresses. This explained why SSH connection attempts could not be established. While this did not directly cause the website outage, it prevented administrators from remotely accessing the server for troubleshooting. Our connectivity tests supported these findings. The HTTP test timed out and was unsuccessful. Based on the evidence collected, the primary issue involved routing, while the Network ACL created an additional administrative access issue.
 
