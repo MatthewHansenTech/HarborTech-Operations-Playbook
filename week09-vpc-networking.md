@@ -156,7 +156,6 @@ Observed Result:
 "ToPort": 80,
 "CidrIp": "0.0.0.0/0"
 
-Interpretation:
 TCP port 80 was configured to allow HTTP traffic to the web application.
 
 ### Flow Log Evidence
