@@ -66,7 +66,7 @@ Observed Result:
 
 The EBS volume was successfully created and was ready to be attached to an EC2 instance.
 
-###EBS Snapshot Investigation
+### EBS Snapshot Investigation
 
 Command:
 
