@@ -46,7 +46,7 @@ The investigation involved several AWS storage services and storage management f
 * Server-Side Encryption: Verified that uploaded S3 objects were protected using encryption
 
 ## Evidence Reviewed
-EBS Volume Investigation
+### EBS Volume Investigation
 
 Command:
 
@@ -66,8 +66,7 @@ Observed Result:
 
 The EBS volume was successfully created and was ready to be attached to an EC2 instance.
 
-
-EBS Snapshot Investigation
+###EBS Snapshot Investigation
 
 Command:
 
@@ -102,7 +101,7 @@ Observed Result:
 The uploaded file was stored successfully and protected with server-side encryption.
 
 
-S3 Versioning Investigation
+### S3 Versioning Investigation
 
 Command:
 
@@ -114,7 +113,7 @@ Observed Result:
 
 Versioning was successfully enabled for the bucket.
 
-Lifecycle Investigation
+### Lifecycle Investigation
 
 Command:
 
@@ -122,7 +121,7 @@ aws s3api get-bucket-lifecycle-configuration --bucket week10-matthew-hansen --re
 
 Observed Result:
 
-NoSuchLifecycleConfiguration
+### NoSuchLifecycleConfiguration
 
 No lifecycle configuration existed for the bucket.
 
