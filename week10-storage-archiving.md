@@ -29,21 +29,21 @@ I verified that I was connected to the AWS Academy Learner Lab environment and c
 ## AWS Services Involved
 The investigation involved several AWS storage services and storage management features. We reviewed these services to determine which storage solutions best supported the client's recovery, file sharing, document storage, and long-term retention requirements:
 
-Amazon EBS: Used to provide block storage for EC2 instances
+* Amazon EBS: Used to provide block storage for EC2 instances
 
-EBS Snapshots: Used to create backup and recovery points for EBS volumes
+* EBS Snapshots: Used to create backup and recovery points for EBS volumes
 
-Amazon EFS: Reviewed as a solution for shared file access across multiple Linux servers
+* Amazon EFS: Reviewed as a solution for shared file access across multiple Linux servers
 
-Amazon S3: Used to store uploaded documents as objects
+* Amazon S3: Used to store uploaded documents as objects
 
-S3 Versioning: Used to protect files from accidental deletion or modification
+* S3 Versioning: Used to protect files from accidental deletion or modification
 
-S3 Lifecycle Rules: Reviewed to automate data movement based on age and access patterns
+* S3 Lifecycle Rules: Reviewed to automate data movement based on age and access patterns
 
-Glacier Storage Classes: Reviewed as a long-term archival storage solution
+* Glacier Storage Classes: Reviewed as a long-term archival storage solution
 
-Server-Side Encryption: Verified that uploaded S3 objects were protected using encryption
+* Server-Side Encryption: Verified that uploaded S3 objects were protected using encryption
 
 ## Evidence Reviewed
 EBS Volume Investigation
