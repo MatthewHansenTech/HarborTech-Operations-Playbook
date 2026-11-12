@@ -121,7 +121,7 @@ aws s3api get-bucket-lifecycle-configuration --bucket week10-matthew-hansen --re
 
 Observed Result:
 
-### NoSuchLifecycleConfiguration
+NoSuchLifecycleConfiguration
 
 No lifecycle configuration existed for the bucket.
 
