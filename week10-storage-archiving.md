@@ -145,6 +145,7 @@ Proposed Lifecycle Rule:
     }
   ]
 }
+```
 
 ## Operational Analysis
 My evidence shows that EBS provides storage for EC2 instances and supports snapshots for backup and recovery. The completed snapshot demonstrated that recovery points can be created successfully. However, a 19-day-old snapshot would not meet the client's current requirement to limit data loss to 24 hours. The S3 investigation confirmed that uploaded documents can be stored reliably using object storage. The uploaded file was stored successfully and protected with encryption, and versioning was also enabled, which helps protect files from accidental deletion or modification. The lifecycle investigation showed that no lifecycle policy currently exists. This means older records are not automatically moved into archival storage. Based on the evidence collected, multiple AWS storage services are needed to meet all client requirements.
