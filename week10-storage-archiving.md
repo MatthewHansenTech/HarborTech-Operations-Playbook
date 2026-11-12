@@ -127,6 +127,7 @@ No lifecycle configuration existed for the bucket.
 
 Proposed Lifecycle Rule:
 
+```json
 {
   "Rules": [
     {
