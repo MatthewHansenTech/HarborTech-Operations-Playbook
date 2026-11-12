@@ -199,11 +199,11 @@ Management should review and approve costs related to Amazon EFS, automated snap
 This week taught me that different AWS storage services are designed for different purposes. EBS is used for EC2 storage, EFS provides shared file access across multiple servers, and S3 stores uploaded documents and other files. I also learned how snapshots support recovery planning, how versioning protects files from accidental changes, and how lifecycle rules can automate long-term storage management.
 
 ## Professional Vocabulary
-Block Storage: Storage that presents data as disk volumes to operating systems and applications.
-File Storage: Storage that organizes information into files and folders that multiple systems can access.
-Object Storage: Storage that stores data as objects along with metadata.
-EBS Snapshot: A point-in-time backup of an Amazon EBS volume.
-Amazon EFS: A managed file storage service that allows multiple systems to access the same file system.
-S3 Versioning: A feature that stores multiple versions of files and helps recover deleted or modified data.
-Lifecycle Rule: An automated policy that manages data based on age or storage requirements.
-Archive: A Long-term storage for data that must be retained but is rarely accessed.
+* Block Storage: Storage that presents data as disk volumes to operating systems and applications.
+* File Storage: Storage that organizes information into files and folders that multiple systems can access.
+* Object Storage: Storage that stores data as objects along with metadata.
+* EBS Snapshot: A point-in-time backup of an Amazon EBS volume.
+* Amazon EFS: A managed file storage service that allows multiple systems to access the same file system.
+* S3 Versioning: A feature that stores multiple versions of files and helps recover deleted or modified data.
+* Lifecycle Rule: An automated policy that manages data based on age or storage requirements.
+* Archive: Long-term storage for data that must be retained but is rarely accessed.
