@@ -41,18 +41,18 @@ AWS Config was investigated as a potential evidence source; however, no configur
 Amazon Athena was reviewed as a potential evidence source, but no investigation-related datasets were available for use during this incident.
 
 ## AWS Commands Used
-CloudTrail Audit Review
+### CloudTrail Audit Review
 aws cloudtrail lookup-events --max-results 20
 
-CloudWatch Alarm History
+### CloudWatch Alarm History
 aws cloudwatch describe-alarm-history \
 --alarm-name week11-cpu-high
 
-Security Group Configuration Review
+### Security Group Configuration Review
 aws ec2 describe-security-groups \
 --group-ids sg-000904af0cdf84e53
 
-Alarm Status Verification
+### Alarm Status Verification
 aws cloudwatch describe-alarms \
 --alarm-names week11-cpu-high
 
