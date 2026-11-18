@@ -41,23 +41,23 @@ AWS Config was investigated as a potential evidence source; however, no configur
 Amazon Athena was reviewed as a potential evidence source, but no investigation-related datasets were available for use during this incident.
 
 ## AWS Commands Used
-# CloudTrail Audit Review
+CloudTrail Audit Review
 aws cloudtrail lookup-events --max-results 20
 
-# CloudWatch Alarm History
+CloudWatch Alarm History
 aws cloudwatch describe-alarm-history \
 --alarm-name week11-cpu-high
 
-# Security Group Configuration Review
+Security Group Configuration Review
 aws ec2 describe-security-groups \
 --group-ids sg-000904af0cdf84e53
 
-# Alarm Status Verification
+Alarm Status Verification
 aws cloudwatch describe-alarms \
 --alarm-names week11-cpu-high
 
 ## AWS Evidence Collected
-# CloudTrail Audit Evidence
+CloudTrail Audit Evidence
 Event Name:
 AuthorizeSecurityGroupIngress
 
@@ -76,7 +76,7 @@ sg-000904af0cdf84e53
 Result:
 Inbound TCP 8080 rule added
 
-# CloudWatch Alarm History
+CloudWatch Alarm History
 2026-11-17T21:16:58 UTC
 Alarm Created
 
@@ -95,7 +95,7 @@ INSUFFICIENT_DATA → OK
 2026-11-18T23:01:54 UTC
 INSUFFICIENT_DATA → ALARM
 
-# CloudWatch Alarm Status
+CloudWatch Alarm Status
 Alarm Name:
 week11-cpu-high
 
