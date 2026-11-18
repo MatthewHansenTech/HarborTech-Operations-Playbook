@@ -57,7 +57,7 @@ aws cloudwatch describe-alarms \
 --alarm-names week11-cpu-high
 
 ## AWS Evidence Collected
-CloudTrail Audit Evidence
+### CloudTrail Audit Evidence
 Event Name:
 AuthorizeSecurityGroupIngress
 
@@ -76,7 +76,7 @@ sg-000904af0cdf84e53
 Result:
 Inbound TCP 8080 rule added
 
-CloudWatch Alarm History
+### CloudWatch Alarm History
 2026-11-17T21:16:58 UTC
 Alarm Created
 
@@ -95,7 +95,7 @@ INSUFFICIENT_DATA → OK
 2026-11-18T23:01:54 UTC
 INSUFFICIENT_DATA → ALARM
 
-CloudWatch Alarm Status
+### CloudWatch Alarm Status
 Alarm Name:
 week11-cpu-high
 
@@ -128,14 +128,15 @@ Time (UTC)	Evidence Source	Event
 
 CloudTrail audit records showed that an AuthorizeSecurityGroupIngress API action occurred at 21:17:30 UTC. The event was associated with the authenticated AWS session user. CloudWatch monitoring data provided timestamps immediately before and after the recorded management action. By correlating monitoring records, audit evidence, and event timestamps, HarborTech reconstructed the sequence of events and verified that a configuration change occurred during the incident window. The evidence clearly identifies the timing of the change and the AWS session associated with it. However, the available evidence does not explain the business purpose behind the modification.
 
-# Supported Findings
+### Supported Findings
 Finding 1: CloudTrail recorded an AuthorizeSecurityGroupIngress event at 21:17:30 UTC.
 
 Finding 2: CloudTrail identified the authenticated AWS session user4752033=Matthew_J._Hansen as the session associated with the modification.
 
 Finding 3: CloudWatch alarm history documented monitoring activity and provided timestamps that supported reconstruction of the incident timeline.
 
-Finding 4: CloudWatch confirmed that CPU utilization exceeded the configured threshold and caused the alarm to enter the ALARM state.
+Finding 4: CloudWatch confirmed that CPU utilization exceeded the configured threshold, causing the alarm to enter the ALARM state.
+
 CloudWatch alarm history documented monitoring activity and recorded transitions from INSUFFICIENT_DATA to OK and later from OK to ALARM.
 
 The available evidence indicates that the modification was performed through an authenticated AWS session rather than an automated system failure. The modification may have been performed for testing, troubleshooting, or temporary operational purposes; however, the available evidence does not confirm the reason for the change.
