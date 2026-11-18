@@ -10,20 +10,20 @@ HarborTech was asked to investigate an unexpected configuration change within th
 Unauthorized or undocumented configuration changes can increase operational and security risk. Changes made without approval or documentation make troubleshooting more difficult and can expose cloud resources to unintended access. HarborTech was asked to determine what happened and recommend appropriate corrective actions based on available evidence.
 
 ## AWS Services Involved
-Amazon CloudWatch
-CloudWatch Metrics
-CloudWatch Alarms
-AWS CloudTrail
-Monitoring
-Audit Evidence
-Configuration Verification
-Incident Timeline Analysis
+* Amazon CloudWatch
+* CloudWatch Metrics
+* CloudWatch Alarms
+* AWS CloudTrail
+* Monitoring
+* Audit Evidence
+* Configuration Verification
+* Incident Timeline Analysis
 
-##Virtualization Connection
+## Virtualization Connection
 
 Virtualization allows infrastructure, monitoring, and management functions to operate through software-defined systems instead of physical hardware controls. In our investigation, CloudWatch provided performance and monitoring information, while CloudTrail supplied audit records showing management activity within the AWS environment. Together, these services allowed HarborTech to reconstruct the incident using objective system-generated evidence instead of relying on memory.
 
-##Evidence Reviewed
+## Evidence Reviewed
 
 The following evidence sources were reviewed during the investigation:
 
