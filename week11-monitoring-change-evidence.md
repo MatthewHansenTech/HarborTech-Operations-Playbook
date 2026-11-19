@@ -27,14 +27,14 @@ Virtualization allows infrastructure, monitoring, and management functions to op
 
 The following evidence sources were reviewed during the investigation:
 
-CloudWatch alarm history
-CloudWatch alarm status
-CloudTrail management events
-Event timestamps
-User identity information
-API activity records
-Configuration-change evidence
-Incident timeline reconstruction
+* CloudWatch alarm history
+* CloudWatch alarm status
+* CloudTrail management events
+* Event timestamps
+* User identity information
+* API activity records
+* Configuration-change evidence
+* Incident timeline reconstruction
 
 AWS Config was investigated as a potential evidence source; however, no configuration recorder was configured within our Learner Lab environment.
 
